@@ -12,7 +12,7 @@
 let r, g, b;
 let r2, g2, b2;
 let mouseR = 30;
-let point;
+let score;
 let margin = 160;
 let sparkle;
 let timer = 10;
@@ -26,8 +26,8 @@ function setup() {
   createCanvas(windowWidth, windowHeight);
   score = 0;
   beat = new Beat();
-  sparkle = loadImage("sparkle.gif")
-  song = loadSound("tokyo_revengers.mp3", playSong);
+  sparkle = loadImage("assets/sparkle.gif")
+  song = loadSound("assets/tokyo_revengers.mp3", playSong);
 }
 
 function draw() {
