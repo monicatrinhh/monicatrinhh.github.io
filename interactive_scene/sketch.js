@@ -92,7 +92,7 @@ class Beat {
 
     this.x = random(margin, width - margin); //xpos
     this.y = random(margin, height - margin); //ypos
-    this.r = random(50, 80); //radius
+    this.r = random(60, 80); //radius
     this.c = color(r, g, b);
   }
   show() {
@@ -107,14 +107,7 @@ class Beat {
     //   if (this.r > newRadius) {
     //     radiusDirection = "reduce";
     //   }
-    // }
-    // else if (radiusDirection === "reduce") {
-    //   this.r--;
-    //   if (this.r <= initialRadius) {
-    //     radiusDirection = "expand";
-    //   }
-
-    // }
+  
   }
 
   contain(x2, y2) {
@@ -137,7 +130,7 @@ class Beat {
   changeLocation() {
     this.x = random(margin, width - margin);
     this.y = random(margin, height - margin);
-    this.r = random(50, 80);
+    this.r = random(60, 80);
   }
 
   burst() {
