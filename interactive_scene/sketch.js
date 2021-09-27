@@ -16,9 +16,10 @@ let mouseR = 30;
 let point;
 let margin = 160;
 let sparkle;
-let timer = 10;
+let timer = 20;
 let state;
 let pointsGained = false;
+let song;
 
 
 function setup() {
@@ -27,6 +28,7 @@ function setup() {
   score = 0;
   beat = new Beat();
   sparkle = loadImage("sparkle.gif")
+  song = loadSound("tokyo_revengers.mp3", playSong);
 }
 function draw() {
 
@@ -39,7 +41,8 @@ function draw() {
     text("Press Enter to Start", width / 2, height / 2);
   }
 
-  if (state === "game") {
+  else if (state === "game") {
+    
     image(sparkle, mouseX - beat.r, mouseY - beat.r);
     if (beat.contain(mouseX, mouseY)) {
       if (mouseIsPressed) {
@@ -49,6 +52,8 @@ function draw() {
         pointsGained = true;
       }
     }
+
+   
 
     beat.show();
     beat.popping();
@@ -69,13 +74,14 @@ function draw() {
     if (frameCount % 60 === 0 && timer > 0) {
       timer--;
     }
-
+    
   }
   if (timer === 0) {
     clear();
     background(0);
     text("Hit Enter to Restart", width / 2, height / 2);
     text("Total: " + score, width / 2, height / 2 - 40);
+    song.stop();
     state = "restart";
   }
 
@@ -139,6 +145,11 @@ function increasePoint() {
 function keyPressed() {
   if (keyCode === ENTER) {
     state = "game";
+    song.play();
   }
 
+}
+
+function playSong(){
+  song.play();
 }
