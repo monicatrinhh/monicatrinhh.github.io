@@ -5,18 +5,17 @@
 /* Extra for Experts:
   + HTML/CSS banner
   + Sound
+  + Timer + Points
+  + Classify Object
 */
-
-// change color for mouse, make buble burst, make bubble pop, dragging mouse?, add song, song end = game over or finish all beat (MaxPoint)
 
 let r, g, b;
 let r2, g2, b2;
-// let maxPoint;
 let mouseR = 30;
 let point;
 let margin = 160;
 let sparkle;
-let timer = 20;
+let timer = 60;
 let state;
 let pointsGained = false;
 let song;
@@ -30,6 +29,7 @@ function setup() {
   sparkle = loadImage("sparkle.gif")
   song = loadSound("tokyo_revengers.mp3", playSong);
 }
+
 function draw() {
 
   background(0);
@@ -53,12 +53,9 @@ function draw() {
       }
     }
 
-
-
     beat.show();
     beat.popping();
     increasePoint()
-
 
     noCursor();
     fill(beat.c);
@@ -66,15 +63,12 @@ function draw() {
 
     // timer
     text(timer, width / 2, 50);
-
-
     textAlign(CENTER)
     textSize(30);
 
     if (frameCount % 60 === 0 && timer > 0) {
       timer--;
     }
-
   }
   if (timer === 0) {
     clear();
@@ -134,6 +128,7 @@ class Beat {
   }
 }
 
+// toggle boolean to change points
 function increasePoint() {
   if (pointsGained) {
     score++;
