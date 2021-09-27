@@ -15,7 +15,7 @@ let mouseR = 30;
 let point;
 let margin = 160;
 let sparkle;
-let timer = 60;
+let timer = 10;
 let state;
 let pointsGained = false;
 let song;
@@ -79,6 +79,9 @@ function draw() {
     state = "restart";
   }
 
+  if (state === "restart") {
+
+  }
 }
 
 class Beat {
@@ -97,7 +100,21 @@ class Beat {
     circle(this.x, this.y, this.r * 2);
   }
   popping() {
+    // let newRadius = 80;
+    // let radiusDirection = "expand";
+    // if (radiusDirection === "expand") {
+    //   this.r++;
+    //   if (this.r > newRadius) {
+    //     radiusDirection = "reduce";
+    //   }
+    // }
+    // else if (radiusDirection === "reduce") {
+    //   this.r--;
+    //   if (this.r <= initialRadius) {
+    //     radiusDirection = "expand";
+    //   }
 
+    // }
   }
 
   contain(x2, y2) {
@@ -142,7 +159,6 @@ function keyPressed() {
     state = "game";
     song.play();
   }
-
 }
 
 function playSong() {
