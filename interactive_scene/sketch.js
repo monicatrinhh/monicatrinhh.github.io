@@ -42,7 +42,7 @@ function draw() {
   }
 
   else if (state === "game") {
-    
+
     image(sparkle, mouseX - beat.r, mouseY - beat.r);
     if (beat.contain(mouseX, mouseY)) {
       if (mouseIsPressed) {
@@ -53,7 +53,7 @@ function draw() {
       }
     }
 
-   
+
 
     beat.show();
     beat.popping();
@@ -74,7 +74,7 @@ function draw() {
     if (frameCount % 60 === 0 && timer > 0) {
       timer--;
     }
-    
+
   }
   if (timer === 0) {
     clear();
@@ -150,6 +150,6 @@ function keyPressed() {
 
 }
 
-function playSong(){
+function playSong() {
   song.play();
 }
