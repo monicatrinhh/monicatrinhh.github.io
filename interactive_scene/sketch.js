@@ -9,6 +9,8 @@
   + Classify Object
 */
 
+// rotate sparkle, burst out into squares, restart, sounds fx
+
 let r, g, b;
 let r2, g2, b2;
 let mouseR = 30;
@@ -48,7 +50,7 @@ function draw() {
     image(sparkle, mouseX - beat.r, mouseY - beat.r);
     if (beat.contain(mouseX, mouseY)) {
       if (mouseIsPressed) {
-        
+
         beat.burst();
         beat.changeColor(r2, g2, b2);
         pointsGained = true;
@@ -100,13 +102,13 @@ class Beat {
     circle(this.x, this.y, this.r * 2);
   }
   popping() {
-    if (this.r < 150){
+    if (this.r < 150) {
       this.r++;
     }
-    else{
+    else {
       this.burst();
       pointsDeduct = true;
-      
+
     }
   }
 
@@ -134,9 +136,9 @@ class Beat {
   }
 
   burst() {
-    rect(this.x, this.y, 20,20);
+    rect(this.x, this.y, 20, 20);
     this.changeLocation();
-    this.changeColor(r2,g2,b2);
+    this.changeColor(r2, g2, b2);
   }
 }
 
@@ -157,9 +159,12 @@ function decreasePoint() {
 
 // press Enter to start
 function keyPressed() {
-  if (keyCode === ENTER) {
-    state = "game";
-    song.play();
+  if (state === "opening" || state === "restart") {
+    if (keyCode === ENTER) {
+      state = "game";
+      song.play();
+    }
+
   }
 }
 
@@ -167,6 +172,10 @@ function playSong() {
   song.play();
 }
 
-function rotateSparkle(){
+function rotateSparkle() {
+
+}
+
+function rotateSquares() {
 
 }
