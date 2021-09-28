@@ -18,7 +18,9 @@ let sparkle;
 let timer = 10;
 let state;
 let pointsGained = false;
+let pointsDeduct = false;
 let song;
+let expand = false;
 
 
 function setup() {
@@ -46,16 +48,17 @@ function draw() {
     image(sparkle, mouseX - beat.r, mouseY - beat.r);
     if (beat.contain(mouseX, mouseY)) {
       if (mouseIsPressed) {
-        beat.changeColor(r2, g2, b2);
-        beat.changeLocation();
+        
         beat.burst();
+        beat.changeColor(r2, g2, b2);
         pointsGained = true;
       }
     }
 
     beat.show();
     beat.popping();
-    increasePoint()
+    increasePoint();
+    decreasePoint();
 
     noCursor();
     fill(beat.c);
@@ -79,9 +82,6 @@ function draw() {
     state = "restart";
   }
 
-  if (state === "restart") {
-
-  }
 }
 
 class Beat {
@@ -100,14 +100,14 @@ class Beat {
     circle(this.x, this.y, this.r * 2);
   }
   popping() {
-    // let newRadius = 80;
-    // let radiusDirection = "expand";
-    // if (radiusDirection === "expand") {
-    //   this.r++;
-    //   if (this.r > newRadius) {
-    //     radiusDirection = "reduce";
-    //   }
-  
+    if (this.r < 150){
+      this.r++;
+    }
+    else{
+      this.burst();
+      pointsDeduct = true;
+      
+    }
   }
 
   contain(x2, y2) {
@@ -134,7 +134,9 @@ class Beat {
   }
 
   burst() {
-
+    rect(this.x, this.y, 20,20);
+    this.changeLocation();
+    this.changeColor(r2,g2,b2);
   }
 }
 
@@ -143,6 +145,13 @@ function increasePoint() {
   if (pointsGained) {
     score++;
     pointsGained = !pointsGained;
+  }
+}
+
+function decreasePoint() {
+  if (pointsDeduct) {
+    score--;
+    pointsDeduct = !pointsDeduct;
   }
 }
 
@@ -156,4 +165,8 @@ function keyPressed() {
 
 function playSong() {
   song.play();
+}
+
+function rotateSparkle(){
+
 }
