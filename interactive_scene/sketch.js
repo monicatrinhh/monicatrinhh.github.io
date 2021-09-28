@@ -159,8 +159,9 @@ function decreasePoint() {
 
 // press Enter to start
 function keyPressed() {
-  if (state === "opening" || state === "restart") {
+  if (state === "opening") {
     if (keyCode === ENTER) {
+      console.log("hi")
       state = "game";
       song.play();
     }
