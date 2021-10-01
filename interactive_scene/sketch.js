@@ -17,13 +17,15 @@ let mouseR = 30;
 let score;
 let margin = 160;
 let sparkle;
-let timer = 10;
+let timer = 30;
 let state;
 let pointsGained = false;
 let pointsDeduct = false;
 let song;
 let expand = false;
-
+let firework;
+let bursted = false;
+let lastTimeSwitched = 30;
 
 function setup() {
   state = "opening";
@@ -31,7 +33,9 @@ function setup() {
   score = 0;
   beat = new Beat();
   sparkle = loadImage("assets/sparkle.gif")
+  firework = loadImage("assets/firework.gif");
   song = loadSound("assets/tokyo_revengers.mp3", playSong);
+  
 }
 
 function draw() {
@@ -136,10 +140,10 @@ class Beat {
   }
 
   burst() {
-    rect(this.x, this.y, 20, 20);
-    this.changeLocation();
-    this.changeColor(r2, g2, b2);
-  }
+  
+      image(firework, this.x, this.y);
+      this.changeLocation();
+      this.changeColor(r2, g2, b2);
 }
 
 // toggle boolean to change points
@@ -161,7 +165,7 @@ function decreasePoint() {
 function keyPressed() {
   if (state === "opening") {
     if (keyCode === ENTER) {
-      console.log("hi")
+      console.log("hi");
       state = "game";
       song.play();
     }
@@ -174,9 +178,5 @@ function playSong() {
 }
 
 function rotateSparkle() {
-
-}
-
-function rotateSquares() {
 
 }
