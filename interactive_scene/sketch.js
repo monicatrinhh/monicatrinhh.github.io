@@ -5,11 +5,11 @@
 /* Extra for Experts:
   + HTML/CSS banner
   + Sound
-  + Timer + Points
+  + Mouse Bubble Effect
   + Classify Object
 */
 
-// rotate sparkle, burst out into squares, restart, sounds fx
+// restart, sounds fx, lyrics pop up at text
 
 let r, g, b;
 let r2, g2, b2;
@@ -24,33 +24,38 @@ let pointsDeduct = false;
 let song;
 let expand = false;
 
-const particles = [];
+const particles = []; // store particle history
+
+function preload() {
+  song = loadSound("assets/tokyo_revengers.mp3"); // to play music
+  gameFont = loadFont('assets/RussoOne-Regular.ttf');
+}
 
 function setup() {
   state = "opening";
   createCanvas(windowWidth, windowHeight);
   score = 0;
-  beat = new Beat();
-  // sparkle = loadImage("assets/sparkle.gif")
-  // firework = loadImage("assets/firework.gif");
-  song = loadSound("assets/tokyo_revengers.mp3", playSong);
-  
+  beat = new Beat(); //create a new beat object
+
 }
 
 function draw() {
 
   background(0);
 
+  // opening state
   if (state === "opening") {
     fill(255);
     textAlign(CENTER)
     textSize(30);
+    textFont(gameFont);
     text("Press Enter to Start", width / 2, height / 2);
   }
 
+  // gaming state
   else if (state === "game") {
 
-    // image(sparkle, mouseX - beat.r, mouseY - beat.r);
+    // gaining points by clicking on the beat
     if (beat.contain(mouseX, mouseY)) {
       if (mouseIsPressed) {
 
@@ -60,6 +65,7 @@ function draw() {
       }
     }
 
+    // setting up the beat
     beat.show();
     beat.popping();
     increasePoint();
@@ -67,11 +73,8 @@ function draw() {
 
     noCursor();
     fill(beat.c);
-    // circle(mouseX, mouseY, mouseR);
 
-
-
-
+    // pushing the trail of particles
     for (let i = 0; i < 5; i++) {
       let p = new Particle();
       particles.push(p);
@@ -85,18 +88,18 @@ function draw() {
       }
     }
 
-
-
-
-    // timer
+    // setting up text
     text(timer, width / 2, 50);
     textAlign(CENTER)
     textSize(30);
 
+    // timer
     if (frameCount % 60 === 0 && timer > 0) {
       timer--;
     }
   }
+
+  // score and points popping up when timer ends
   if (timer === 0) {
     clear();
     background(0);
@@ -105,9 +108,9 @@ function draw() {
     song.stop();
     state = "restart";
   }
-
 }
 
+// setting up mouse bubbles
 class Particle {
 
   constructor() {
@@ -130,13 +133,13 @@ class Particle {
 
   show() {
     noStroke();
-    
     fill(beat.c);
     ellipse(this.x, this.y, 16);
   }
 
 }
 
+// setting up the beat
 class Beat {
   constructor() {
     r = random(255);
@@ -149,7 +152,7 @@ class Beat {
     this.c = color(r, g, b);
   }
   show() {
-    fill(this.c);
+    fill(this.c); // random color
     circle(this.x, this.y, this.r * 2);
   }
   popping() {
@@ -187,9 +190,9 @@ class Beat {
   }
 
   burst() {
-      // setTimeout(fireworkBurst, 2000);
-      this.changeLocation();
-      this.changeColor(r2, g2, b2);
+    // setTimeout(fireworkBurst, 2000);
+    this.changeLocation();
+    this.changeColor(r2, g2, b2);
   }
 }
 
@@ -226,6 +229,6 @@ function playSong() {
   song.play();
 }
 
-function popUpLyrics(){
-  
+function popUpLyrics() {
+
 }
