@@ -23,17 +23,16 @@ let pointsGained = false;
 let pointsDeduct = false;
 let song;
 let expand = false;
-let firework;
-let bursted = false;
-let lastTimeSwitched = 30;
+
+const particles = [];
 
 function setup() {
   state = "opening";
   createCanvas(windowWidth, windowHeight);
   score = 0;
   beat = new Beat();
-  sparkle = loadImage("assets/sparkle.gif")
-  firework = loadImage("assets/firework.gif");
+  // sparkle = loadImage("assets/sparkle.gif")
+  // firework = loadImage("assets/firework.gif");
   song = loadSound("assets/tokyo_revengers.mp3", playSong);
   
 }
@@ -51,7 +50,7 @@ function draw() {
 
   else if (state === "game") {
 
-    image(sparkle, mouseX - beat.r, mouseY - beat.r);
+    // image(sparkle, mouseX - beat.r, mouseY - beat.r);
     if (beat.contain(mouseX, mouseY)) {
       if (mouseIsPressed) {
 
@@ -68,7 +67,26 @@ function draw() {
 
     noCursor();
     fill(beat.c);
-    circle(mouseX, mouseY, mouseR);
+    // circle(mouseX, mouseY, mouseR);
+
+
+
+
+    for (let i = 0; i < 5; i++) {
+      let p = new Particle();
+      particles.push(p);
+    }
+    for (let i = particles.length - 1; i >= 0; i--) {
+      particles[i].update();
+      particles[i].show();
+      if (particles[i].finished()) {
+        // remove this particle
+        particles.splice(i, 30);
+      }
+    }
+
+
+
 
     // timer
     text(timer, width / 2, 50);
@@ -86,6 +104,35 @@ function draw() {
     text("Total: " + score, width / 2, height / 2 - 40);
     song.stop();
     state = "restart";
+  }
+
+}
+
+class Particle {
+
+  constructor() {
+    this.x = mouseX;
+    this.y = mouseY;
+    this.vx = random(-1, 1);
+    this.vy = random(-5, -1);
+    this.effect = 255;
+  }
+
+  finished() {
+    return this.effect < 0;
+  }
+
+  update() {
+    this.x += this.vx;
+    this.y += this.vy;
+    this.effect -= 5;
+  }
+
+  show() {
+    noStroke();
+    
+    fill(beat.c);
+    ellipse(this.x, this.y, 16);
   }
 
 }
@@ -140,11 +187,13 @@ class Beat {
   }
 
   burst() {
-  
-      image(firework, this.x, this.y);
+      // setTimeout(fireworkBurst, 2000);
       this.changeLocation();
       this.changeColor(r2, g2, b2);
+  }
 }
+
+
 
 // toggle boolean to change points
 function increasePoint() {
@@ -177,6 +226,6 @@ function playSong() {
   song.play();
 }
 
-function rotateSparkle() {
-
+function popUpLyrics(){
+  
 }
