@@ -17,12 +17,13 @@ let mouseR = 30;
 let score;
 let margin = 160;
 let sparkle;
-let timer = 30;
+let timer;
 let state;
 let pointsGained = false;
 let pointsDeduct = false;
 let song;
 let expand = false;
+let restartImg;
 
 const particles = []; // store particle history
 
@@ -36,6 +37,7 @@ function setup() {
   createCanvas(windowWidth, windowHeight);
   score = 0;
   beat = new Beat(); //create a new beat object
+  restartImg = loadImage('assets/reset.png');
 
 }
 
@@ -45,20 +47,22 @@ function draw() {
 
   // opening state
   if (state === "opening") {
+    background(0);
     fill(255);
     textAlign(CENTER)
     textSize(30);
     textFont(gameFont);
     text("Press Enter to Start", width / 2, height / 2);
+    timer = 30;
   }
 
   // gaming state
   else if (state === "game") {
-
+    clear();
+    background(0);
     // gaining points by clicking on the beat
     if (beat.contain(mouseX, mouseY)) {
       if (mouseIsPressed) {
-
         beat.burst();
         beat.changeColor(r2, g2, b2);
         pointsGained = true;
@@ -97,16 +101,18 @@ function draw() {
     if (frameCount % 60 === 0 && timer > 0) {
       timer--;
     }
-  }
 
+    if (timer === 0) {
+      state = "restart"
+    }
+
+  }
   // score and points popping up when timer ends
-  if (timer === 0) {
-    clear();
-    background(0);
-    text("Hit Enter to Restart", width / 2, height / 2);
-    text("Total: " + score, width / 2, height / 2 - 40);
+  else if (state === "restart") {
+    text("Total: " + score, width / 2, height / 2 - 60);
     song.stop();
-    state = "restart";
+    cursor();
+    resetButton();
   }
 }
 
@@ -190,13 +196,24 @@ class Beat {
   }
 
   burst() {
-    // setTimeout(fireworkBurst, 2000);
     this.changeLocation();
     this.changeColor(r2, g2, b2);
   }
 }
 
+function resetButton() {
+  imageMode(CENTER);
+  image(restartImg, width / 2, height / 2, 200, 100);
+  if (state === "restart") {
+    if (mouseX > width / 2 - 110 && mouseX < width / 2 + 110 && mouseY > height / 2 - 55 && mouseY < height / 2 + 55) {
+      if (mouseIsPressed) {
+        state = "opening";
+      }
+    }
 
+  }
+
+}
 
 // toggle boolean to change points
 function increasePoint() {
@@ -217,18 +234,23 @@ function decreasePoint() {
 function keyPressed() {
   if (state === "opening") {
     if (keyCode === ENTER) {
-      console.log("hi");
+
       state = "game";
       song.play();
     }
 
   }
+  else if (state === "restart") {
+    if (keyCode === DELETE) {
+      state = "opening";
+
+    }
+
+  }
+
 }
 
-function playSong() {
-  song.play();
-}
 
-function popUpLyrics() {
+// function popUpLyrics() {
 
-}
+// }
