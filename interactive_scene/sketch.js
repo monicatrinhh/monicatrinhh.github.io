@@ -35,7 +35,6 @@ function setup() {
 
   beat = new Beat(); //create a new beat object
   restartImg = loadImage('assets/reset.png');
-
 }
 
 function draw() {
@@ -99,7 +98,6 @@ function draw() {
     if (frameCount % 60 === 0 && timer > 0) {
       timer--;
     }
-
     if (timer === 0) {
       state = "restart";
     }
@@ -118,21 +116,21 @@ function draw() {
 class Particle {
 
   constructor() {
-    this.x = mouseX;
-    this.y = mouseY;
-    this.vx = random(-1, 1);
-    this.vy = random(-5, -1);
-    this.effect = 255;
+    this.x = mouseX; //xpos
+    this.y = mouseY; //ypos
+    this.dx = random(-1, 1); //x xpeed
+    this.dy = random(-5, -1); //y speed
+    this.num = 155; // number of particles
   }
 
   finished() {
-    return this.effect < 0;
+    return this.num < 0;
   }
 
   update() {
-    this.x += this.vx;
-    this.y += this.vy;
-    this.effect -= 5;
+    this.x += this.dx;
+    this.y += this.dy;
+    this.num -= 5;
   }
 
   show() {
@@ -140,7 +138,6 @@ class Particle {
     fill(beat.c);
     ellipse(this.x, this.y, 16);
   }
-
 }
 
 // setting up the beat
@@ -166,7 +163,6 @@ class Beat {
     else {
       this.burst();
       pointsDeduct = true;
-
     }
   }
 
@@ -208,9 +204,7 @@ function resetButton() {
         state = "opening";
       }
     }
-
   }
-
 }
 
 // toggle boolean to change points
@@ -232,23 +226,9 @@ function decreasePoint() {
 function keyPressed() {
   if (state === "opening") {
     if (keyCode === ENTER) {
-
       state = "game";
       song.play();
     }
-
   }
-  else if (state === "restart") {
-    if (keyCode === DELETE) {
-      state = "opening";
-
-    }
-
-  }
-
 }
 
-
-// function popUpLyrics() {
-
-// }
