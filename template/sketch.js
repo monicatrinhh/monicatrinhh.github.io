@@ -1,12 +1,7 @@
-// Interactive Scene
+// Project Name
 // Monica Trinh
-// September 20,2021
-//
-/* Extra for Experts:
-  + HTML/CSS banner
-  + Sound
-  + popping bubbles
-*/
+// Date
+
 
 
 function setup() {
