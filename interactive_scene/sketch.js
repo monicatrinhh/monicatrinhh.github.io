@@ -9,14 +9,11 @@
   + Classify Object
 */
 
-// restart, sounds fx, lyrics pop up at text
-
 let r, g, b;
 let r2, g2, b2;
 let mouseR = 30;
 let score;
 let margin = 160;
-let sparkle;
 let timer;
 let state;
 let pointsGained = false;
@@ -35,7 +32,7 @@ function preload() {
 function setup() {
   state = "opening";
   createCanvas(windowWidth, windowHeight);
-  score = 0;
+
   beat = new Beat(); //create a new beat object
   restartImg = loadImage('assets/reset.png');
 
@@ -54,6 +51,7 @@ function draw() {
     textFont(gameFont);
     text("Press Enter to Start", width / 2, height / 2);
     timer = 30;
+    score = 0;
   }
 
   // gaming state
@@ -103,7 +101,7 @@ function draw() {
     }
 
     if (timer === 0) {
-      state = "restart"
+      state = "restart";
     }
 
   }
@@ -162,7 +160,7 @@ class Beat {
     circle(this.x, this.y, this.r * 2);
   }
   popping() {
-    if (this.r < 150) {
+    if (this.r < 110) {
       this.r++;
     }
     else {
