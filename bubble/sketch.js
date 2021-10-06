@@ -19,17 +19,17 @@ function mousePressed(){
   for (let i=0; i<5;i++){
     spawnBubble();
   }
-  
 }
 
 function spawnBubble(){
   let bubble = {
-    x: mouseX,
-    y: mouseY,
+    x: random(width),
+    y: height,
     radius: random(20,50),
     dx: 0,
     dy: -3,
     theColor: color(random(255),random(255),random(255)),
+    theTime: random(1000);
   }
   theBubble.push(bubble);
 }
@@ -39,7 +39,10 @@ function bubbleUp() {
     bubble.y += bubble.dy;
 
     // jitter sideways
-    bubble.x += random(-5,5);
+    // bubble.x += random(-5,5);
+
+    bubble.x = noise(bubble.theTime)* width;
+    bubble.theTime += 0.1;
   }
   
 }
