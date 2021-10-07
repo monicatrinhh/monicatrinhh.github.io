@@ -20,7 +20,7 @@ function generateTerrain(){
   for (let i=0;i<numberOfRects;i++){
     let theHeight = noise(time) * height;
     rectHeights.push(theHeight);
-    time += 0.005;
+    time += 0.002;
   }
 }
 
