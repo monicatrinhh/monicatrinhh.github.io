@@ -8,6 +8,7 @@ let grid;
 function setup() {
   createCanvas(windowWidth, windowHeight);
   grid = createRandom2DArray(gridSize, gridSize);
+  song = loadSound("assets/soundfx.wav"); // to play music
 }
 
 function draw() {
@@ -61,17 +62,30 @@ function createRandom2DArray(rows, cols) {
 
 
 function mousePressed(){
+  song.play();
   let cellWidth = width/gridSize;
   let cellHeight = height/gridSize;
 
   let cellX = Math.floor(mouseX/cellWidth);
   let cellY = Math.floor(mouseY/cellHeight);
-
+  
+  
   if (grid[cellY][cellX] === 1){
     grid[cellY][cellX] = 0;
+    grid[cellY+1][cellX] = 0;
+    grid[cellY-1][cellX] = 0;
+    grid[cellY][cellX+1] = 0;
+    grid[cellY][cellX-1] = 0;
+
   }
  
   else if (grid[cellY][cellX] === 0){
     grid[cellY][cellX] = 1;
+    grid[cellY+1][cellX] = 1;
+    grid[cellY-1][cellX] = 1;
+    grid[cellY][cellX+1] = 1;
+    grid[cellY][cellX-1] = 1;
   }
+
+  
 }
