@@ -4,6 +4,12 @@
 
 let gridSize = 30;
 let grid;
+let song;
+let cellWidth = width/gridSize;
+let cellHeight = height/gridSize;
+
+let cellX = Math.floor(mouseX/cellWidth);
+let cellY = Math.floor(mouseY/cellHeight);
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -87,5 +93,6 @@ function mousePressed(){
     grid[cellY][cellX-1] = 1;
   }
 
-  
 }
+
+// press e for white; press b for black

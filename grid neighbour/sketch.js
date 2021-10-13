@@ -4,6 +4,7 @@
 
 let gridSize = 30;
 let grid;
+let song;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -78,5 +79,5 @@ function mousePressed(){
     grid[cellY][cellX] = 1;
   }
 
-  
 }
+
