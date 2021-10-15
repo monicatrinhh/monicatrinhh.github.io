@@ -1,43 +1,121 @@
 // Game of Life
 // Monica Trinh
-// Date
+// October 15th, 2021
 
-let gridSize = 30;
 let grid;
-
+let gridSize = 40;
+let cellWidth, cellHeight;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
-  grid = createRandom2DArray(gridSize,gridSize);
+  grid = createEmpty2DArray(gridSize, gridSize);
+  cellWidth = width/gridSize;
+  cellHeight = height/gridSize;
 }
 
 function draw() {
   background(220);
-
-  // if (grid[y][x] === 0){
-  //   fill(0);
-  // }
-  // else if (grid[y][x] === 1){
-  //   fill(255);
-  // }
+  displayGrid();
 }
 
+function mousePressed() {
+  let cellX = Math.floor(mouseX/cellWidth);
+  let cellY = Math.floor(mouseY/cellHeight);
 
-function createRandom2DArray(rows,cols){
-  let cellWidth = width/gridSize;
-  let cellHeight = height/gridSize;
+  if (grid[cellY][cellX] === 0) {
+    grid[cellY][cellX] = 1;
+  }
+  else if (grid[cellY][cellX] === 1) {
+    grid[cellY][cellX] = 0;
+  }
+}
 
-  grid = [];
-  for (let y=0; y < cellHeight; y++){
-    grid.push(0);
-    for(let x=0; x < cellWidth; x++){
+function displayGrid() {
+  for (let y=0; y<gridSize; y++) {
+    for (let x=0; x<gridSize; x++) {
+      if (grid[y][x] === 0) {
+        fill("white");
+      }
+      if (grid[y][x] === 1) {
+        fill("black");
+      }
+      rect(x*cellWidth, y*cellHeight, cellWidth, cellHeight);
+    }
+  }
+}
+
+function createEmpty2DArray(rows, cols) {
+  let board = [];
+  for (let y=0; y<rows; y++) {
+    board.push([]);
+    for (let x=0; x<cols; x++) {
+      board[y].push(0);
+    }
+  }
+  return board;
+}
+
+function createRandom2DArray(rows, cols) {
+  let board = [];
+  for (let y=0; y<rows; y++) {
+    board.push([]);
+    for (let x=0; x<cols; x++) {
       if (random(100)<50){
-         grid.push(0);
+        board[y].push(0);
       }
       else{
-        grid.push(1);
+        board[y].push(1);
       }
     }
   }
-  
+  return board;
+}
+
+function keyPressed(){
+  if (key === "e"){
+    grid = createEmpty2DArray(gridSize,gridSize);
+  }
+  if (key === "r"){
+    grid = createRandom2DArray(gridSize,gridSize);
+  }
+  if(key === " "){
+    nextTurn();
+  }
+}
+
+function nextTurn(){
+  let newBoard = createEmpty2DArray(gridSize,gridSize);
+  for(let y=0; y<gridSize;y++){
+    for(let x=0; y<gridSize; x++){
+      let neighbours = 0;
+
+      // look at all neighbours and count them
+      for (let i=-1; i<=1; i++){
+        for (let j = -1; j<=1; j++){
+          if(y+i >= 0 && x+j > 0 && y+i <gridSize && x+j < gridSize){
+            neighbours += grid[y+i][x+j];
+          }
+        }
+      }
+
+      // don't count yourself
+      neighbours -= grid[y][x];
+
+      // apply rule
+      if (grid[y][x] === 1){
+        if(neighbours === 2 || neighbours === 3){
+          newBoard[y][x] = 1;
+        }
+        else {
+          newBoard[y][x] = 0;
+        }
+      }
+      if (grid[y][x] === 0){
+        if(neighbours === 3){
+          newBoard[y][x] = 1;
+        }
+      }
+    }
+  }
+  grid = newBoard;
 }
