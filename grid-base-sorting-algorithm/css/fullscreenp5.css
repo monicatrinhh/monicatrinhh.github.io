@@ -1,10 +1,66 @@
-body, html {
-    padding: 0;
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300&display=swap');
+
+*
+{ 
     margin: 0;
-    height: 100%;
-    overflow: hidden;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
 }
-::-webkit-scrollbar {
-    display: none;
+body
+{
+    background: pink;
+    min-height: 100vh;
+
 }
- 
+header{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display:flex;
+    justify-content: space-between;
+    align-items:center;
+    transition: 0.6s;
+    padding: 40px 100px;
+    background: white;
+}
+
+
+header .logo
+{
+    position: relative;
+    max-width: 200px;
+    transition: 0.6s;
+    text-decoration: none;
+}
+header ul.nav-ul
+{
+    position: relative;
+    display: flex;
+    justify-self: center;
+    align-items: center;
+}
+
+header ul.nav-ul li
+{
+    position: relative;
+    list-style: none;
+}
+header ul.nav-ul li a
+{
+    position: relative;
+    margin: 0 15px;
+    text-decoration: none;
+    color: #000;
+    letter-spacing: 2px;
+    font-weight: 500px;
+    transition: 0.6s;
+}
+
+
+header ul.nav-ul li :hover
+{
+    color: #8c52ff;
+    transition: 0.5s;
+}

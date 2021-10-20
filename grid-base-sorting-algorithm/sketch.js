@@ -1,7 +1,6 @@
-// Project Name
+// 2D Array Grid Base Sorting Algorithm
 // Monica Trinh
-// Date
-
+// October 19th, 2021
 
 
 function setup() {
@@ -10,5 +9,5 @@ function setup() {
 
 function draw() {
   background(220);
-  rect(mouseX,mouseY,100,50);
+  rect(mouseX,mouseY,50,50);
 }
