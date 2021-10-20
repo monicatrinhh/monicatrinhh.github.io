@@ -1,6 +1,6 @@
-// Grid Base Game
+// Project Name
 // Monica Trinh
-// OCtober 19th, 2021
+// Date
 
 
 
@@ -10,5 +10,5 @@ function setup() {
 
 function draw() {
   background(220);
-  
+  rect(mouseX,mouseY,100,50);
 }
