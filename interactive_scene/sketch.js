@@ -180,7 +180,7 @@ class Beat {
     r2 = random(255);
     g2 = random(255);
     b2 = random(255);
-    this.c = color(red, green, blue);
+    this.c = color(r2, g2, b2);
   }
 
   changeLocation() {

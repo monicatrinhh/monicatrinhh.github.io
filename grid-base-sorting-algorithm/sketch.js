@@ -5,9 +5,24 @@
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
+
+  // generate new Array
+  bGenerate = createButton('Generate New Array');
+  bGenerate.position(width / 2 - (width / 4), 40);
+  bGenerate.mousePressed(generateNewArray);
+
+  // Array Size slider
+  slider = createSlider(0, 50, 5);
+  slider.position(width / 2 - (width / 8), 45);
+  slider.style('width', '80px');
+
 }
 
 function draw() {
   background(220);
-  rect(mouseX,mouseY,50,50);
+
+}
+
+function generateNewArray() {
+
 }
