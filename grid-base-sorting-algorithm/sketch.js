@@ -30,8 +30,19 @@ function setup() {
 }
 
 function draw() {
-  background(220); 
+  background(0); 
  
+  for (let i = 0; i < values.length; i++) {
+    noStroke();
+    if (states[i] == 0) {
+      fill('#E0777D');
+    } else if (states[i] == 1) {
+      fill('#D6FFB7');
+    } else {
+      fill(255);
+    }
+    rect(i * w, height - values[i], w, values[i]);
+  }
 }
 
 function generateNewArray(){ 
@@ -93,22 +104,6 @@ async function partition(arr, start, end) {
   }
 
   return pivotIndex;
-}
-
-function draw() {
-  background(0);
-
-  for (let i = 0; i < values.length; i++) {
-    noStroke();
-    if (states[i] == 0) {
-      fill('#E0777D');
-    } else if (states[i] == 1) {
-      fill('#D6FFB7');
-    } else {
-      fill(255);
-    }
-    rect(i * w, height - values[i], w, values[i]);
-  }
 }
 
 async function swap(arr, a, b) {
