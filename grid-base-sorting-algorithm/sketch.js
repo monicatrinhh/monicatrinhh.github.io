@@ -25,13 +25,13 @@ function setup() {
 
   // change color of the sorting?
 
-  buttonArray.mousePressed(quickSort(values, 0, values.length - 1));
+   buttonArray.mousePressed(quickSort(values, 0, values.length - 1));
   
 }
 
 function draw() {
   background(0); 
- 
+  
   for (let i = 0; i < values.length; i++) {
     noStroke();
     if (states[i] == 0) {
@@ -43,6 +43,8 @@ function draw() {
     }
     rect(i * w, height - values[i], w, values[i]);
   }
+  
+ 
 }
 
 function generateNewArray(){ 
