@@ -14,19 +14,13 @@ function setup() {
   createCanvas(windowWidth, windowHeight);
 
   arrayButton();
-  
-  buttonArray = createButton('Sort');
-  buttonArray.position(width/2 , 40);
-  
 
   slider = createSlider(0, width, 50);
   slider.position(width/2 - width/8, 40);
   slider.style('width', '80px');
 
   // change color of the sorting?
-
-   buttonArray.mousePressed(quickSort(values, 0, values.length - 1));
-  
+  sortButton();
 }
 
 function draw() {
@@ -43,8 +37,6 @@ function draw() {
     }
     rect(i * w, height - values[i], w, values[i]);
   }
-  
- 
 }
 
 function generateNewArray(){ 
@@ -61,12 +53,13 @@ function arrayButton(){
   buttonArray.position(width/2 - width/4, 40);
   buttonArray.mousePressed(generateNewArray);
   buttonArray.style('background-color', "pink");
-  // buttonArray.style('fontFamily', 'poppins');
-  // buttonArray.style('borderRadius', '8px');
-  // buttonArray.style('borderStyle', 'solid');
-  // buttonArray.style('borderColor', 'red');
 }
 
+function sortButton(){
+  buttonArray = createButton('Sort');
+  buttonArray.position(width/2 , 40);
+  // buttonArray.mousePressed(quickSort(values, 0, values.length - 1));
+}
 
 async function quickSort(arr, start, end) {
   if (start >= end) {
