@@ -15,7 +15,7 @@ function setup() {
 
   arrayButton();
 
-  slider = createSlider(0, width/2, 50);
+  slider = createSlider(0, 500, 50);
   slider.position(width/2 - width/8, 40);
   slider.style('width', '80px');
 
@@ -28,9 +28,9 @@ function draw() {
   for (let i = 0; i < values.length; i++) {
     noStroke();
     if (states[i] == 0) {
-      fill('#E0777D');
+      fill('#ff290d');
     } else if (states[i] == 1) {
-      fill('#D6FFB7');
+      fill('#7affd9');
     } else {
       fill(255);
     }
