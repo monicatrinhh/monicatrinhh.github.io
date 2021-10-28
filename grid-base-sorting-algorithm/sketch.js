@@ -15,12 +15,11 @@ function setup() {
 
   arrayButton();
 
-  slider = createSlider(0, width, 50);
+  slider = createSlider(0, width/2, 50);
   slider.position(width/2 - width/8, 40);
   slider.style('width', '80px');
 
-  // change color of the sorting?
-  sortButton();
+
 }
 
 function draw() {
@@ -37,15 +36,17 @@ function draw() {
     }
     rect(i * w, height - values[i], w, values[i]);
   }
+  
 }
 
 function generateNewArray(){ 
   arraySize = slider.value();
   values = new Array(arraySize);
   for (let i = 0; i < values.length; i++) {
-    values[i] = random(height-400);
+    values[i] = random(height-200);
     states[i] = -1;
   }
+  quickSort(values, 0, values.length - 1)
 }
 
 function arrayButton(){
@@ -53,12 +54,6 @@ function arrayButton(){
   buttonArray.position(width/2 - width/4, 40);
   buttonArray.mousePressed(generateNewArray);
   buttonArray.style('background-color', "pink");
-}
-
-function sortButton(){
-  buttonArray = createButton('Sort');
-  buttonArray.position(width/2 , 40);
-  // buttonArray.mousePressed(quickSort(values, 0, values.length - 1));
 }
 
 async function quickSort(arr, start, end) {
@@ -111,4 +106,60 @@ async function swap(arr, a, b) {
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
+
+
+// function quickSort(array, start, end){
+//   if (start >= end) {
+//     return;
+//   }
+
+// }
+
+// function quickSort(arr, start, end) {
+//   
+//   let index = partition(arr, start, end);
+//   states[index] = -1;
+
+//   quickSort(arr, start, index - 1);
+//   quickSort(arr, index + 1, end);
+ 
+// }
+
+// function partition(arr, start, end) {
+//   for (let i = start; i < end; i++) {
+//     states[i] = 1;
+//   }
+
+//   let pivotValue = arr[end];
+//   let pivotIndex = start;
+//   states[pivotIndex] = 0;
+//   for (let i = start; i < end; i++) {
+//     if (arr[i] < pivotValue) {
+//       swap(arr, i, pivotIndex);
+//       states[pivotIndex] = -1;
+//       pivotIndex++;
+//       states[pivotIndex] = 0;
+//     }
+//   }
+//   swap(arr, pivotIndex, end);
+
+//   for (let i = start; i < end; i++) {
+//     if (i != pivotIndex) {
+//       states[i] = -1;
+//     }
+//   }
+
+//   return pivotIndex;
+// }
+
+// function swap(arr, a, b) {
+  
+//   let temp = arr[a];
+//   arr[a] = arr[b];
+//   arr[b] = temp;
+// }
+
+// // function sleep(ms) {
+// //   return new Promise(resolve => setTimeout(resolve, ms));
+// // }
 
