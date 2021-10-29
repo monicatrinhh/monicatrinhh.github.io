@@ -3,15 +3,18 @@
 // October 19th, 2021
 
 let buttonArray;
+let buttonSort;
 let slider;
 let arraySize;
 let values = [];
 let states = [];
-let buttonSort;
 let w = 10;
+let ding;
+let sorted;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
+  ding = loadSound('assets/ding.mp3');
 
   arrayButton();
 
@@ -19,7 +22,7 @@ function setup() {
   slider.position(width/2 - width/8, 40);
   slider.style('width', '80px');
 
-
+  quickSortButton();
 }
 
 function draw() {
@@ -45,8 +48,8 @@ function generateNewArray(){
   for (let i = 0; i < values.length; i++) {
     values[i] = random(height-200);
     states[i] = -1;
-  }
-  quickSort(values, 0, values.length - 1)
+  } 
+
 }
 
 function arrayButton(){
@@ -56,36 +59,51 @@ function arrayButton(){
   buttonArray.style('background-color', "pink");
 }
 
-async function quickSort(arr, start, end) {
+function quickSortButton(){
+  buttonSort = createButton('Quick Sort');
+  buttonSort.position(width/2, 40);
+  buttonSort.mousePressed(isItSort);
+  buttonSort.style('background-color', "pink");
+}
+
+function isItSort(){
+  quickSort(values, 0, values.length - 1);
+
+ 
+}
+
+
+async function quickSort(array, start, end) {
   if (start >= end) {
     return;
   }
-  let index = await partition(arr, start, end);
+  let index = await partition(array, start, end);
   states[index] = -1;
 
   await Promise.all([
-    quickSort(arr, start, index - 1),
-    quickSort(arr, index + 1, end)
+    quickSort(array, start, index - 1),
+    quickSort(array, index + 1, end)
   ]);
+  // ding.play();
 }
 
-async function partition(arr, start, end) {
+async function partition(array, start, end) {
   for (let i = start; i < end; i++) {
     states[i] = 1;
   }
 
-  let pivotValue = arr[end];
+  let pivotValue = array[end];
   let pivotIndex = start;
   states[pivotIndex] = 0;
   for (let i = start; i < end; i++) {
-    if (arr[i] < pivotValue) {
-      await swap(arr, i, pivotIndex);
+    if (array[i] < pivotValue) {
+      await swap(array, i, pivotIndex);
       states[pivotIndex] = -1;
       pivotIndex++;
       states[pivotIndex] = 0;
     }
   }
-  await swap(arr, pivotIndex, end);
+  await swap(array, pivotIndex, end);
 
   for (let i = start; i < end; i++) {
     if (i != pivotIndex) {
@@ -96,70 +114,14 @@ async function partition(arr, start, end) {
   return pivotIndex;
 }
 
-async function swap(arr, a, b) {
+async function swap(array, a, b) {
   await sleep(50);
-  let temp = arr[a];
-  arr[a] = arr[b];
-  arr[b] = temp;
+  let temporary = array[a];
+  array[a] = array[b];
+  array[b] = temporary;
 }
 
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
-
-
-// function quickSort(array, start, end){
-//   if (start >= end) {
-//     return;
-//   }
-
-// }
-
-// function quickSort(arr, start, end) {
-//   
-//   let index = partition(arr, start, end);
-//   states[index] = -1;
-
-//   quickSort(arr, start, index - 1);
-//   quickSort(arr, index + 1, end);
- 
-// }
-
-// function partition(arr, start, end) {
-//   for (let i = start; i < end; i++) {
-//     states[i] = 1;
-//   }
-
-//   let pivotValue = arr[end];
-//   let pivotIndex = start;
-//   states[pivotIndex] = 0;
-//   for (let i = start; i < end; i++) {
-//     if (arr[i] < pivotValue) {
-//       swap(arr, i, pivotIndex);
-//       states[pivotIndex] = -1;
-//       pivotIndex++;
-//       states[pivotIndex] = 0;
-//     }
-//   }
-//   swap(arr, pivotIndex, end);
-
-//   for (let i = start; i < end; i++) {
-//     if (i != pivotIndex) {
-//       states[i] = -1;
-//     }
-//   }
-
-//   return pivotIndex;
-// }
-
-// function swap(arr, a, b) {
-  
-//   let temp = arr[a];
-//   arr[a] = arr[b];
-//   arr[b] = temp;
-// }
-
-// // function sleep(ms) {
-// //   return new Promise(resolve => setTimeout(resolve, ms));
-// // }
 
