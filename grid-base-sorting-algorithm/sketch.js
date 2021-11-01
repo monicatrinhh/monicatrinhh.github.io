@@ -3,53 +3,79 @@
 // October 19th, 2021
 
 let buttonArray;
+let buttonSort;
 let slider;
 let arraySize;
 let values = [];
 let states = [];
-let buttonSort;
-let w = 10;
+let cellWidth = 10;
+let ding;
+let soundtrack;
+let sorted;
+let buttonState = "generate";
+
+
+// switch the butonState back to generate for it to works properly, basically figured out when it stops to shove in stopping music and switching buttonState
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
 
+  // music and sountrack
+  ding = loadSound('assets/ding.mp3');
+  soundtrack = loadSound('assets/soundtrack.mp3');
+
+  // generate new array
   arrayButton();
 
-  slider = createSlider(0, width, 50);
+  // array size
+  slider = createSlider(0, width / cellWidth, 50);
   slider.position(width / 2 - width / 8, 40);
   slider.style('width', '80px');
 
-  // change color of the sorting?
-  sortButton();
-  frameRate(5);
-  quickSort(values, 0, values.length - 1);
+  // sort button
+  quickSortButton();
 }
 
 function draw() {
   background(0);
 
+  let arrayDimension = arraySize * cellWidth;
+
+  // fill in the color while sorting
   for (let i = 0; i < values.length; i++) {
     noStroke();
-    if (states[i] == 0) {
-      fill('#E0777D');
-    } else if (states[i] == 1) {
-      fill('#D6FFB7');
+    if (states[i] === 0) {
+      fill('#ff290d');
+    } else if (states[i] === 1) {
+      fill('#7affd9');
     } else {
       fill(255);
+
     }
-    rect(i * w, height - values[i], w, values[i]);
+    // draw rectangles representing data in an array
+    rect(i * cellWidth + (width - arrayDimension) / 2, height - values[i], cellWidth, values[i]);
   }
+
+
 }
+
 
 function generateNewArray() {
-  arraySize = slider.value();
-  values = new Array(arraySize);
-  for (let i = 0; i < values.length; i++) {
-    values[i] = random(height - 400);
-    states[i] = -1;
+
+  // generate new array
+  if (buttonState === "generate") {
+    arraySize = slider.value();
+    values = new Array(arraySize);
+    for (let i = 0; i < values.length; i++) {
+      values[i] = random(height - 200);
+      states[i] = -1;
+    }
+    // switching state to sort
+    buttonState = "sort";
   }
 }
 
+// button design
 function arrayButton() {
   buttonArray = createButton('Generate New Array');
   buttonArray.position(width / 2 - width / 4, 40);
@@ -57,96 +83,70 @@ function arrayButton() {
   buttonArray.style('background-color', "pink");
 }
 
-function sortButton() {
-  buttonArray = createButton('Sort');
-  buttonArray.position(width / 2, 40);
-
+// button design
+function quickSortButton() {
+  buttonSort = createButton('Quick Sort');
+  buttonSort.position(width / 2, 40);
+  buttonSort.mousePressed(isItSort);
+  buttonSort.style('background-color', "pink");
 }
 
-function quickSort(array, start, end) {
+// call the quickSort function when click on the sort button
+function isItSort() {
+  if (buttonState === "sort") {
+    soundtrack.play();
+    quickSort(values, 0, values.length - 1);
+  }
+}
+
+// delay quicksort function and animate the process
+async function quickSort(array, start, end) {
   if (start >= end) {
     return;
   }
-  let index = partition(array, start, end);
+  let index = await partition(array, start, end);
+  states[index] = -1;
+
   quickSort(array, start, index - 1);
   quickSort(array, index + 1, end);
+
 }
 
-function partition(array, start, end) {
-  let pivotPoint = start;
+// determining partition value/point and swap out the lesser value to the left 
+async function partition(array, start, end) {
+  for (let i = start; i < end; i++) {
+    states[i] = 1;
+  }
+
   let pivotValue = array[end];
+  let pivotIndex = start;
+  states[pivotIndex] = 0;
   for (let i = start; i < end; i++) {
     if (array[i] < pivotValue) {
-      swap(array, i, pivotPoint);
-      pivotPoint++;
+      await swapOut(array, i, pivotIndex);
+      states[pivotIndex] = -1;
+      pivotIndex++;
+      states[pivotIndex] = 0;
     }
   }
-  swap(array, pivotPoint, end);
-  return pivotPoint;
+  await swapOut(array, pivotIndex, end);
+
+  for (let i = start; i < end; i++) {
+    if (i != pivotIndex) {
+      states[i] = -1;
+    }
+  }
+
+  return pivotIndex;
 }
 
-function swap(array, a, b) {
-  let temporary = array[a];
+async function swapOut(array, a, b) {
+  await sleep(50);
+  let hold = array[a];
   array[a] = array[b];
-  array[b] = temporary;
+  array[b] = hold;
 }
 
-
-
-
-
-
-
-
-
-// function quickSort(arr, start, end) {
-//   if (start >= end) {
-//     return;
-//   }
-//   let index = await partition(arr, start, end);
-//   states[index] = -1;
-
-//   await Promise.all([
-//     quickSort(arr, start, index - 1),
-//     quickSort(arr, index + 1, end)
-//   ]);
-// }
-
-// function partition(arr, start, end) {
-//   for (let i = start; i < end; i++) {
-//     states[i] = 1;
-//   }
-
-//   let pivotValue = arr[end];
-//   let pivotIndex = start;
-//   states[pivotIndex] = 0;
-//   for (let i = start; i < end; i++) {
-//     if (arr[i] < pivotValue) {
-//       swap(arr, i, pivotIndex);
-//       states[pivotIndex] = -1;
-//       pivotIndex++;
-//       states[pivotIndex] = 0;
-//     }
-//   }
-//   swap(arr, pivotIndex, end);
-
-//   for (let i = start; i < end; i++) {
-//     if (i != pivotIndex) {
-//       states[i] = -1;
-//     }
-//   }
-
-//   return pivotIndex;
-// }
-
-// function swap(arr, a, b) {
-//   await sleep(50);
-//   let temp = arr[a];
-//   arr[a] = arr[b];
-//   arr[b] = temp;
-// }
-
-// function sleep(ms) {
-//   return new Promise(resolve => setTimeout(resolve, ms));
-// }
-
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
