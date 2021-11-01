@@ -27,9 +27,20 @@ function draw() {
   
 }
 
-function mousePressed(){
-  let ball = new Ball(mouseX,mouseY);
+function keyPressed(){
+  if(key === " "){
+    let ball = new Ball(mouseX,mouseY);
   ballArray.push(ball);
+  }
+  
+}
+
+function mousePressed(){
+  for(let i = ballArray.length-1; i >=0; i--){
+    if(ballArray[i].isPointInBall(mouseX,mouseY)){
+      ballArray.splice(i,1);
+    }
+  }
 }
 
 class Ball{
@@ -51,13 +62,22 @@ class Ball{
   move(){
     this.x += this.dx;
     this.y += this.dy;
-    
-    if(this.x <= this.r && this.x >= width-this.r){
+
+    //check if need to bounce
+    if (this.x + this.r >= width || this.x - this.r <= 0) {
       this.dx *= -1;
     }
-
-    if(this.y <= this.r && this.y >= height-this.r){
+    if (this.y + this.r >= height || this.y - this.r <= 0) {
       this.dy *= -1;
+    }
+  }
+
+  isPointInBall(x,y) {
+    if(dist(x,y, this.x, this.y) < this.r){
+      return true;
+    }
+    else{
+      return false;
     }
   }
 }

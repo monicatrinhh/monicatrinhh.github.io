@@ -13,7 +13,7 @@ let ding;
 let soundtrack;
 let sorted;
 let buttonState = "generate";
-
+let allDone;
 
 // switch the butonState back to generate for it to works properly, basically figured out when it stops to shove in stopping music and switching buttonState
 
@@ -40,28 +40,32 @@ function draw() {
   background(0);
 
   let arrayDimension = arraySize * cellWidth;
-
+  
   // fill in the color while sorting
   for (let i = 0; i < values.length; i++) {
+  
     noStroke();
     if (states[i] === 0) {
       fill('#ff290d');
-    } else if (states[i] === 1) {
+    } 
+    else if (states[i] === 1) {
       fill('#7affd9');
-    } else {
+    } 
+    else {
       fill(255);
-
     }
     // draw rectangles representing data in an array
     rect(i * cellWidth + (width - arrayDimension) / 2, height - values[i], cellWidth, values[i]);
   }
 
-
+  for (let i = 0; i < values.length; i++){
+    if(values[i] <= values[i+1]){
+      allDone = true;
+    }
+  }
 }
 
-
 function generateNewArray() {
-
   // generate new array
   if (buttonState === "generate") {
     arraySize = slider.value();
