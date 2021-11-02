@@ -14,6 +14,10 @@ let soundtrack;
 let sorted;
 let buttonState = "generate";
 let allDone;
+let count = 0;
+let doneCount = false;
+let swapCount = 0;
+let swapDone = false;
 
 // switch the butonState back to generate for it to works properly, basically figured out when it stops to shove in stopping music and switching buttonState
 
@@ -58,10 +62,8 @@ function draw() {
     rect(i * cellWidth + (width - arrayDimension) / 2, height - values[i], cellWidth, values[i]);
   }
 
-  for (let i = 0; i < values.length; i++){
-    if(values[i] <= values[i+1]){
-      allDone = true;
-    }
+  if(count === values.length){
+    buttonState = "generate";
   }
 }
 
@@ -111,9 +113,12 @@ async function quickSort(array, start, end) {
   let index = await partition(array, start, end);
   states[index] = -1;
 
+  // swapDone = ! swapDone;
   quickSort(array, start, index - 1);
+  // countMe();
+  // swapDone = ! swapDone;
   quickSort(array, index + 1, end);
-
+  // countMe();
 }
 
 // determining partition value/point and swap out the lesser value to the left 
@@ -137,13 +142,25 @@ async function partition(array, start, end) {
 
   for (let i = start; i < end; i++) {
     if (i != pivotIndex) {
+      // doneCount = !doneCount;
       states[i] = -1;
+      // countMe();
     }
   }
 
   return pivotIndex;
 }
 
+function countMe(){
+  if(doneCount){
+    count++;
+    doneCount = !doneCount;
+  }
+  if(swapDone){
+    swapCount++;
+    swapDone = ! swapDone;
+  }
+}
 async function swapOut(array, a, b) {
   await sleep(50);
   let hold = array[a];
