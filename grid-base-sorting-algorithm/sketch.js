@@ -13,7 +13,7 @@ let ding;
 let soundtrack;
 let sorted;
 let buttonState = "generate";
-let allDone;
+let allDone = false;
 let count = 0;
 let doneCount = false;
 let swapCount = 0;
@@ -59,12 +59,15 @@ function draw() {
       fill(255);
     }
     // draw rectangles representing data in an array
+    
     rect(i * cellWidth + (width - arrayDimension) / 2, height - values[i], cellWidth, values[i]);
+    
   }
 
-  if(count === values.length){
-    buttonState = "generate";
-  }
+  // if((count/swapCount) >= 10){
+  //   buttonState = "generate";
+  //   soundtrack.stop();
+  // }
 }
 
 function generateNewArray() {
@@ -113,12 +116,12 @@ async function quickSort(array, start, end) {
   let index = await partition(array, start, end);
   states[index] = -1;
 
-  // swapDone = ! swapDone;
+  swapDone = ! swapDone;
   quickSort(array, start, index - 1);
-  // countMe();
-  // swapDone = ! swapDone;
+  countMe();
+  swapDone = ! swapDone;
   quickSort(array, index + 1, end);
-  // countMe();
+  countMe();
 }
 
 // determining partition value/point and swap out the lesser value to the left 
@@ -133,6 +136,7 @@ async function partition(array, start, end) {
   for (let i = start; i < end; i++) {
     if (array[i] < pivotValue) {
       await swapOut(array, i, pivotIndex);
+      count++;
       states[pivotIndex] = -1;
       pivotIndex++;
       states[pivotIndex] = 0;
@@ -142,7 +146,7 @@ async function partition(array, start, end) {
 
   for (let i = start; i < end; i++) {
     if (i != pivotIndex) {
-      // doneCount = !doneCount;
+      // doneCount = true;
       states[i] = -1;
       // countMe();
     }
