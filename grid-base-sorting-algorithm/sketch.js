@@ -13,7 +13,8 @@ let ding;
 let soundtrack;
 let sorted;
 let buttonState = "generate";
-
+let stateCount = 0;
+let counterState = false;
 
 // switch the butonState back to generate for it to works properly, basically figured out when it stops to shove in stopping music and switching buttonState
 
@@ -53,12 +54,22 @@ function draw() {
 
     }
     // draw rectangles representing data in an array
+    stateCount++;
     rect(i * cellWidth + (width - arrayDimension) / 2, height - values[i], cellWidth, values[i]);
   }
 
+  if (stateCount === 50) {
+    soundtrack.stop();
+  }
 
 }
 
+// function stateCounter() {
+//   if (counterState) {
+//     stateCount++;
+//     counterState = !counterState;
+//   }
+// }
 
 function generateNewArray() {
 
@@ -93,6 +104,7 @@ function quickSortButton() {
 
 // call the quickSort function when click on the sort button
 function isItSort() {
+
   if (buttonState === "sort") {
     soundtrack.play();
     quickSort(values, 0, values.length - 1);
