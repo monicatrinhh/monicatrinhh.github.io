@@ -16,6 +16,8 @@ let buttonState = "generate";
 let checkbox;
 let colorPicker;
 let isPicked = false;
+let counter = 0;
+let doneCount = false;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -64,6 +66,10 @@ function draw() {
     // draw rectangles representing data in an array
     rect(i * cellWidth + (width - arrayDimension) / 2, height - values[i], cellWidth, values[i]);
   }
+
+  if(floor(counter/values.length) >= 1){
+    counter = 0;
+  }
 }
 
 function changeColor() {
@@ -71,6 +77,9 @@ function changeColor() {
     colorPicker = createColorPicker('pink');
     colorPicker.position(width / 2 + 300, 40);
     isPicked = true;
+  }
+  else{
+    isPicked = false;
   }
 }
 
@@ -144,7 +153,9 @@ async function partition(array, start, end) {
       await swapOut(array, i, pivotIndex);
       states[pivotIndex] = -1;
       pivotIndex++;
-      states[pivotIndex] = 0;
+      doneCount = ! doneCount;
+      states[pivotIndex] = 0; 
+      counting();
     }
   }
   await swapOut(array, pivotIndex, end);
@@ -152,13 +163,23 @@ async function partition(array, start, end) {
   // setting new sorted value to white
   for (let i = start; i < end; i++) {
     if (i != pivotIndex) {
+      
       states[i] = -1;
+     
     }
   }
   return pivotIndex;
 }
 
-
+function counting(){
+  if(doneCount){
+    counter ++;
+    doneCount = ! doneCount;
+  }
+  else{
+    // counter --;
+  }
+}
 
 // swap values
 async function swapOut(array, a, b) {
