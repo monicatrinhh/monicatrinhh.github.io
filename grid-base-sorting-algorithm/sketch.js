@@ -13,39 +13,38 @@ let ding;
 let soundtrack;
 let sorted;
 let buttonState = "generate";
-let allDone = false;
-let count = 0;
-let doneCount = false;
-let swapCount = 0;
-let swapDone = false;
-
-// switch the butonState back to generate for it to works properly, basically figured out when it stops to shove in stopping music and switching buttonState
+let checkbox;
+let colorPicker;
+let isPicked = false;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
 
   // music and sountrack
   ding = loadSound('assets/ding.mp3');
-  soundtrack = loadSound('assets/soundtrack.mp3');
+  // soundtrack = loadSound('assets/soundtrack.mp3');
 
-
+  // slider value determines the size of the array
   slider = createSlider(0, width / cellWidth, 50);
   slider.position(width / 2 - width / 8, 40);
   slider.style('width', '80px');
 
+  checkbox = createCheckbox('Color Picker', false);
+  checkbox.changed(changeColor);
+  checkbox.position(width / 2 + 150, 40);
 }
 
 function draw() {
   background(0);
-  // array size
+
+  // buttons
   arrayButton();
-  // sort button
   quickSortButton();
+
   let arrayDimension = arraySize * cellWidth;
 
   // fill in the color while sorting
   for (let i = 0; i < values.length; i++) {
-
     noStroke();
     if (states[i] === 0) {
       fill('#ff290d');
@@ -54,14 +53,25 @@ function draw() {
       fill('#7affd9');
     }
     else {
-      fill(255);
+      if (isPicked) {
+        fill(colorPicker.color());
+      }
+      else {
+        fill(255);
+      }
+
     }
     // draw rectangles representing data in an array
     rect(i * cellWidth + (width - arrayDimension) / 2, height - values[i], cellWidth, values[i]);
   }
+}
 
-
-
+function changeColor() {
+  if (this.checked()) {
+    colorPicker = createColorPicker('pink');
+    colorPicker.position(width / 2 + 300, 40);
+    isPicked = true;
+  }
 }
 
 function generateNewArray() {
@@ -97,12 +107,12 @@ function quickSortButton() {
 // call the quickSort function when click on the sort button
 function isItSort() {
   if (buttonState === "sort") {
-    soundtrack.play();
+    // soundtrack.play();
     quickSort(values, 0, values.length - 1);
   }
 }
 
-// delay quicksort function and animate the process
+// delay with async/await for quicksort function to animate the process
 async function quickSort(array, start, end) {
   if (start >= end) {
     return;
@@ -115,15 +125,20 @@ async function quickSort(array, start, end) {
 
 }
 
-// determining partition value/point and swap out the lesser value to the left 
+// determining pivotal value and partition
 async function partition(array, start, end) {
+
+  // setting pre-sorted value to turquoise
   for (let i = start; i < end; i++) {
     states[i] = 1;
   }
 
+  // sort from pivotIndex to pivotValue for each new sorting cohort
   let pivotValue = array[end];
   let pivotIndex = start;
   states[pivotIndex] = 0;
+
+  // swap out lesser value to the left and change the state of the coloring
   for (let i = start; i < end; i++) {
     if (array[i] < pivotValue) {
       await swapOut(array, i, pivotIndex);
@@ -134,6 +149,7 @@ async function partition(array, start, end) {
   }
   await swapOut(array, pivotIndex, end);
 
+  // setting new sorted value to white
   for (let i = start; i < end; i++) {
     if (i != pivotIndex) {
       states[i] = -1;
@@ -142,17 +158,9 @@ async function partition(array, start, end) {
   return pivotIndex;
 }
 
-function countMe() {
-  if (doneCount) {
-    count++;
-    doneCount = !doneCount;
-  }
-  if (swapDone) {
-    swapCount++;
-    swapDone = !swapDone;
-  }
-}
 
+
+// swap values
 async function swapOut(array, a, b) {
   await sleep(50);
   let hold = array[a];
@@ -160,6 +168,7 @@ async function swapOut(array, a, b) {
   array[b] = hold;
 }
 
+// Promise to delay 
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
