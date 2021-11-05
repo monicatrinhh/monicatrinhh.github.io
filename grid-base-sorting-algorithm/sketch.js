@@ -13,8 +13,11 @@ let ding;
 let soundtrack;
 let sorted;
 let buttonState = "generate";
-let stateCount = 0;
-let counterState = false;
+let allDone = false;
+let count = 0;
+let doneCount = false;
+let swapCount = 0;
+let swapDone = false;
 
 // switch the butonState back to generate for it to works properly, basically figured out when it stops to shove in stopping music and switching buttonState
 
@@ -25,54 +28,43 @@ function setup() {
   ding = loadSound('assets/ding.mp3');
   soundtrack = loadSound('assets/soundtrack.mp3');
 
-  // generate new array
-  arrayButton();
 
-  // array size
   slider = createSlider(0, width / cellWidth, 50);
   slider.position(width / 2 - width / 8, 40);
   slider.style('width', '80px');
 
-  // sort button
-  quickSortButton();
 }
 
 function draw() {
   background(0);
-
+  // array size
+  arrayButton();
+  // sort button
+  quickSortButton();
   let arrayDimension = arraySize * cellWidth;
 
   // fill in the color while sorting
   for (let i = 0; i < values.length; i++) {
+
     noStroke();
     if (states[i] === 0) {
       fill('#ff290d');
-    } else if (states[i] === 1) {
+    }
+    else if (states[i] === 1) {
       fill('#7affd9');
-    } else {
+    }
+    else {
       fill(255);
-
     }
     // draw rectangles representing data in an array
-    stateCount++;
     rect(i * cellWidth + (width - arrayDimension) / 2, height - values[i], cellWidth, values[i]);
   }
 
-  if (stateCount === 50) {
-    soundtrack.stop();
-  }
+
 
 }
 
-// function stateCounter() {
-//   if (counterState) {
-//     stateCount++;
-//     counterState = !counterState;
-//   }
-// }
-
 function generateNewArray() {
-
   // generate new array
   if (buttonState === "generate") {
     arraySize = slider.value();
@@ -104,7 +96,6 @@ function quickSortButton() {
 
 // call the quickSort function when click on the sort button
 function isItSort() {
-
   if (buttonState === "sort") {
     soundtrack.play();
     quickSort(values, 0, values.length - 1);
@@ -148,8 +139,18 @@ async function partition(array, start, end) {
       states[i] = -1;
     }
   }
-
   return pivotIndex;
+}
+
+function countMe() {
+  if (doneCount) {
+    count++;
+    doneCount = !doneCount;
+  }
+  if (swapDone) {
+    swapCount++;
+    swapDone = !swapDone;
+  }
 }
 
 async function swapOut(array, a, b) {
